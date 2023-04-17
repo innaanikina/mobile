@@ -11,14 +11,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ListView countriesList = findViewById(R.id.countriesList);
-
-        String[] countries = getResources().getStringArray(R.array.countries);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, countries);
-
-        countriesList.setAdapter(adapter);
     }
 }
