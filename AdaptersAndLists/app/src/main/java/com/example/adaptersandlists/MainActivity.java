@@ -3,43 +3,22 @@ package com.example.adaptersandlists;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.MultiAutoCompleteTextView;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    String[] countries = {"Бразилия", "Аргентина", "Колумбия", "Чили", "Уругвай"};
+    String[] cities = {"Москва", "Самара", "Вологда", "Волгоград", "Саратов", "Воронеж"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView selection = findViewById(R.id.selection);
-
-        Spinner spinner = findViewById(R.id.spinner);
+        MultiAutoCompleteTextView autoCompleteTextView = findViewById(R.id.autocomplete);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, countries);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = (String) adapterView.getItemAtPosition(i);
-                selection.setText(item);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        };
-        spinner.setOnItemSelectedListener(itemSelectedListener);
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, cities);
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
 }
