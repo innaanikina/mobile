@@ -2,7 +2,7 @@ package com.example.gamebird;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    GameField gameField;
+    GameSurfaceView gameField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
