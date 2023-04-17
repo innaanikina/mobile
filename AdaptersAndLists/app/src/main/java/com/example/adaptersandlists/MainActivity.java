@@ -5,59 +5,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<String> users = new ArrayList<>();
-    ArrayList<String> selectedUsers = new ArrayList<>();
-    ArrayAdapter<String> adapter;
-    ListView usersList;
+    ArrayList<State> states = new ArrayList<>();
+    ListView countriesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Collections.addAll(users, "Tom", "Bob", "Sam", "Alice");
-        usersList = findViewById(R.id.usersList);
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_multiple_choice, users);
-        usersList.setAdapter(adapter);
+        setInitialData();
+        countriesList = findViewById(R.id.countriesList);
+        StateAdapter stateAdapter = new StateAdapter(this, R.layout.list_item, states);
+        countriesList.setAdapter(stateAdapter);
 
-        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String user = adapter.getItem(i);
-                if (usersList.isItemChecked(i)) {
-                    selectedUsers.add(user);
-                } else {
-                    selectedUsers.remove(user);
-                }
+                State selectedState = (State) adapterView.getItemAtPosition(i);
+                Toast.makeText(getApplicationContext(),
+                        "Был выбран пункт " + selectedState.getName(),
+                        Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        countriesList.setOnItemClickListener(itemListener);
     }
 
-    public void add(View view) {
-        EditText userName = findViewById(R.id.userName);
-        String user = userName.getText().toString();
-        if (!user.isEmpty()) {
-            adapter.add(user);
-            userName.setText("");
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    public void remove(View view) {
-        for (int i = 0; i < selectedUsers.size(); i++) {
-            adapter.remove(selectedUsers.get(i));
-        }
-        usersList.clearChoices();
-        selectedUsers.clear();
-        adapter.notifyDataSetChanged();
+    private void setInitialData() {
+        states.add(new State("Бразилия", "Бразилиа", R.drawable.brazil));
+        states.add(new State("Аргентина", "Буэнос-Айрес", R.drawable.argentina));
+        states.add(new State("Колумбия", "Богота", R.drawable.colombia));
+        states.add(new State("Уругвай", "Монтевидео", R.drawable.uruguay));
+        states.add(new State("Чили", "Сантьяго", R.drawable.chile));
     }
 }
