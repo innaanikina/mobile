@@ -3,22 +3,33 @@ package com.example.adaptersandlists;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.MultiAutoCompleteTextView;
+import android.widget.GridView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-    String[] cities = {"Москва", "Самара", "Вологда", "Волгоград", "Саратов", "Воронеж"};
+    String[] countries = {"Бразилия", "Аргентина", "Чили", "Колумбия", "Уругвай"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MultiAutoCompleteTextView autoCompleteTextView = findViewById(R.id.autocomplete);
+        GridView countriesList = findViewById(R.id.gridview);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, cities);
-        autoCompleteTextView.setAdapter(adapter);
-        autoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                android.R.layout.simple_list_item_1, countries);
+        countriesList.setAdapter(adapter);
+
+        countriesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(),
+                        "Вы выбрали " + adapterView.getItemAtPosition(i).toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

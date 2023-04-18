@@ -7,14 +7,18 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <MultiAutoCompleteTextView
-        android:id="@+id/autocomplete"
+    <GridView
+        android:id="@+id/gridview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:completionHint="Введите город"
-        android:completionThreshold="1"
+        android:layout_height="0dp"
+        android:numColumns="2"
+        android:verticalSpacing="16dp"
+        android:horizontalSpacing="16dp"
+        android:stretchMode="columnWidth"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
