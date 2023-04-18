@@ -5,32 +5,47 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+
 public class MainActivity extends AppCompatActivity {
+    ListView userList;
+    TextView header;
+    DatabaseHelper databaseHelper;
+    SQLiteDatabase db;
+    Cursor userCursor;
+    SimpleCursorAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        header = findViewById(R.id.header);
+        userList = findViewById(R.id.list);
+
+        databaseHelper = new DatabaseHelper(getApplicationContext());
     }
 
-    public void onClick(View view) {
-        SQLiteDatabase db = getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS users (name TEXT, age INTEGER, UNIQUE(name))");
-        db.execSQL("INSERT OR IGNORE INTO users VALUES ('Tom Smith', 23), ('John Dow', 31);");
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        Cursor query = db.rawQuery("SELECT * FROM users;", null);
-        TextView textView = findViewById(R.id.textView);
-        textView.setText("");
+        db = databaseHelper.getReadableDatabase();
+        userCursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE, null);
+        String[] headers = new String[] {DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR};
+        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                userCursor, headers, new int[] {android.R.id.text1, android.R.id.text2}, 0);
+        header.setText("Найдено элементов: " + userCursor.getCount());
+        userList.setAdapter(userAdapter);
+    }
 
-        while (query.moveToNext()) {
-            String name = query.getString(0);
-            int age = query.getInt(1);
-            textView.append("Name: " + name + " Age: " + age + "\n");
-        }
-        query.close();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         db.close();
+        userCursor.close();
     }
 }
