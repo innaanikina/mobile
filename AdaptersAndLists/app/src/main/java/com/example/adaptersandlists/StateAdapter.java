@@ -13,10 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> {
+    interface OnStateClickListener {
+        void onStateClick(State state, int position);
+    }
+    private final OnStateClickListener onClickListener;
     private final LayoutInflater inflater;
     private final List<State> states;
 
-    StateAdapter(Context context, List<State> states) {
+    StateAdapter(Context context, List<State> states, OnStateClickListener onClickListener) {
+        this.onClickListener = onClickListener;
         this.states = states;
         this.inflater = LayoutInflater.from(context);
     }
@@ -34,6 +39,13 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
         holder.flagView.setImageResource(state.getFlagResource());
         holder.nameView.setText(state.getName());
         holder.capitalView.setText(state.getCapital());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener.onStateClick(state, position);
+            }
+        });
     }
 
     @Override

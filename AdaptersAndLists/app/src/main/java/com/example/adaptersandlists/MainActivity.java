@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
         setInitialData();
         RecyclerView recyclerView = findViewById(R.id.list);
-        StateAdapter adapter = new StateAdapter(this, states);
+
+        StateAdapter.OnStateClickListener stateClickListener = new StateAdapter.OnStateClickListener() {
+            @Override
+            public void onStateClick(State state, int position) {
+                Toast.makeText(getApplicationContext(), "Был выбран пункт " + state.getName(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        StateAdapter adapter = new StateAdapter(this, states,stateClickListener);
         recyclerView.setAdapter(adapter);
     }
 
