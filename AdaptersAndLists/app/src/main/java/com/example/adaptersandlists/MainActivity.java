@@ -1,35 +1,32 @@
 package com.example.adaptersandlists;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    String[] countries = {"Бразилия", "Аргентина", "Чили", "Колумбия", "Уругвай"};
+    ArrayList<State> states = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridView countriesList = findViewById(R.id.gridview);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, countries);
-        countriesList.setAdapter(adapter);
+        setInitialData();
+        RecyclerView recyclerView = findViewById(R.id.list);
+        StateAdapter adapter = new StateAdapter(this, states);
+        recyclerView.setAdapter(adapter);
+    }
 
-        countriesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(),
-                        "Вы выбрали " + adapterView.getItemAtPosition(i).toString(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void setInitialData() {
+        states.add(new State("Бразилия", "Бразилиа", R.drawable.brazil));
+        states.add(new State("Аргентина", "Буэнос-Айрес", R.drawable.argentina));
+        states.add(new State("Колумбия", "Богота", R.drawable.colombia));
+        states.add(new State("Уругвай", "Монтевидео", R.drawable.uruguay));
+        states.add(new State("Чили", "Сантьяго", R.drawable.chile));
     }
 
 }
