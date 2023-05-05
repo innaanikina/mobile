@@ -36,13 +36,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
+        databaseHelper.create_db();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        db = databaseHelper.getReadableDatabase();
+        db = databaseHelper.open();
         userCursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE, null);
         String[] headers = new String[] {DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR};
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
